@@ -64,6 +64,11 @@ def get_audio(filename):
         print(f"❌ Audio error: {str(e)}")
         return "File not found", 404
 
+@app.route("/health")
+def health():
+    return "OK", 200
+
+
 if __name__ == "__main__":
     print("🚀 Starting TTS Server...")
     app.run(host='0.0.0.0', port=5000)
