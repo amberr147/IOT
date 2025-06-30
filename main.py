@@ -34,9 +34,15 @@ def speak():
         file_id = str(uuid.uuid4())
         mp3_path = os.path.join(AUDIO_FOLDER, file_id + ".mp3")
 
-        asyncio.run(generate_tts(text, mp3_path))
+        try:
+            # 🔥 Gọi async TTS và bắt lỗi cụ thể
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            loop.run_until_complete(generate_tts(text, mp3_path))
+        except Exception as err:
+            print(f"❌ Async error: {str(err)}")
+            return jsonify({"error": "TTS generation failed"}), 500
 
-        # Render sẽ tự dùng HTTPS, nên lấy host động
         base_url = request.host_url.rstrip('/')
         file_url = f"{base_url}/audio/{file_id}.mp3"
         print(f"✅ Generated: {file_url}")
@@ -46,6 +52,7 @@ def speak():
     except Exception as e:
         print(f"❌ Error: {str(e)}")
         return jsonify({"error": str(e)}), 500
+
 
 async def generate_tts(text, mp3_path):
     try:
