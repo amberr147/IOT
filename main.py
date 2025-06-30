@@ -56,9 +56,10 @@ def speak():
 
 async def generate_tts(text, mp3_path):
     try:
+        print("🔧 Starting edge_tts...")
         tts = edge_tts.Communicate(text, "en-US-JennyNeural")
         await tts.save(mp3_path)
-        print("✅ MP3 ready")
+        print("✅ MP3 ready at:", mp3_path)
     except Exception as e:
         print(f"❌ TTS Error: {str(e)}")
         raise
