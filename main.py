@@ -35,13 +35,12 @@ def speak():
         mp3_path = os.path.join(AUDIO_FOLDER, file_id + ".mp3")
 
         try:
-            # 🔥 Gọi async TTS và bắt lỗi cụ thể
+            loop = asyncio.get_event_loop()
+        except RuntimeError:
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
-            loop.run_until_complete(generate_tts(text, mp3_path))
-        except Exception as err:
-            print(f"❌ Async error: {str(err)}")
-            return jsonify({"error": "TTS generation failed"}), 500
+
+        loop.run_until_complete(generate_tts(text, mp3_path))
 
         base_url = request.host_url.rstrip('/')
         file_url = f"{base_url}/audio/{file_id}.mp3"
