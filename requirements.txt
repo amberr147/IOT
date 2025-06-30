@@ -1,3 +1,2 @@
-Flask==2.3.3
-edge-tts==6.1.9
-Werkzeug==2.3.7
+Flask
+edge-tts
